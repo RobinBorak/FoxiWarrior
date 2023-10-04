@@ -5,17 +5,39 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
   public GameObject enemyPrefab;
+  float timeSinceLastSpawned = 7f;
+  int enemiesSpawned = 0;
+  int spawnRate = 10;
   // Start is called before the first frame update
   void Start()
   {
-    // Spawn new enemy every 2 seconds
-    InvokeRepeating("SpawnEnemy", 0.0f, 5.0f);
+    // Spawn new enemy every x seconds
+    //InvokeRepeating("SpawnEnemy", 0.0f, 1.0f);
     //SpawnEnemy();
   }
 
   // Update is called once per frame
   void Update()
   {
+    if (timeSinceLastSpawned > spawnRate)
+    {
+      SpawnEnemy();
+      timeSinceLastSpawned = 0f;
+      enemiesSpawned++;
+      if (enemiesSpawned % 2 == 0)
+      {
+        IncreaseSpawnRate();
+      }
+    }
+    else
+    {
+      timeSinceLastSpawned += Time.deltaTime;
+    }
+  }
+
+  void IncreaseSpawnRate()
+  {
+    spawnRate = this.spawnRate * 9 / 10;
   }
 
   void SpawnEnemy()

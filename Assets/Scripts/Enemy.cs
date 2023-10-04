@@ -17,10 +17,11 @@ public class Enemy : MonoBehaviour
   Transform attackPoint;
   public LayerMask playerLayers;
   float attackRate = 1f;
+  float timeSinceLastAttack = 100f;
   Animator animator;
 
   public float attackRange = 0.5f;
-  public float moveToPlayerDistance = 1f;
+  public float moveToPlayerDistance = 1.7f;
 
 
 
@@ -51,10 +52,10 @@ public class Enemy : MonoBehaviour
     }
 
   }
-  float timeSinceLastAttack = 0f;
+
   void FixedUpdate()
   {
-    //Stop moving when close to target
+    //When close to target, do stand still and start Attacking and wait attackRate seconds between attacks
     if (Vector2.Distance(transform.position, target.position) < moveToPlayerDistance)
     {
       // Attack player every attackRate delta seconds
@@ -71,7 +72,7 @@ public class Enemy : MonoBehaviour
     else
     {
       // Stop moving when attacking
-      if (timeSinceLastAttack > attackRate)
+      if (timeSinceLastAttack > attackRate*2)
       {
         MoveEnemy(moveDirection);
       }
@@ -109,21 +110,19 @@ public class Enemy : MonoBehaviour
     Debug.Log("Enemy Attacking");
     animator.SetTrigger("Attack");
 
-    // Start attackswinger, do the attack after attackRate seconds
-    Invoke("RobinAttack", attackRate);
+    // Start attackswinger
+    Invoke("Swing", attackRate);
   }
 
-  void RobinAttack()
+  void Swing()
   {
-    Debug.Log("RobinAttack");
-
-    Debug.Log("Enemy Attack after x seconds");
+    Debug.Log("Enemy Attack after " + attackRate + " seconds");
 
     Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayers);
 
     foreach (Collider2D player in hitPlayers)
     {
-      Debug.Log("We hit " + player.name);
+      Debug.Log("Enemy hit");
       player.GetComponent<Player>().TakeDamage(1);
     }
 
