@@ -14,19 +14,33 @@ public class Enemy : MonoBehaviour
   Rigidbody2D rb;
   Vector2 moveDirection;
 
+  Transform attackPoint;
+  public LayerMask playerLayers;
+  float attackRate = 1f;
+  Animator animator;
+
+  public float attackRange = 0.5f;
+  public float moveToPlayerDistance = 1f;
+
+
+
   // Start is called before the first frame update
   void Start()
   {
     currentHealth = health;
+    // Find target players boxCollider2D
     target = GameObject.FindWithTag("Player").transform;
     rb = GetComponent<Rigidbody2D>();
+
+    animator = GetComponent<Animator>();
+    attackPoint = transform.Find("AttackPoint");
   }
 
   // Update is called once per frame
   void Update()
   {
 
-    if(target != null)
+    if (target != null)
     {
       Vector2 direction = target.position - transform.position;
 
@@ -37,15 +51,35 @@ public class Enemy : MonoBehaviour
     }
 
   }
-
+  float timeSinceLastAttack = 0f;
   void FixedUpdate()
   {
-    //Stop moving when close to player
-    if (Vector2.Distance(transform.position, target.position) < 1.5f)
+    //Stop moving when close to target
+    if (Vector2.Distance(transform.position, target.position) < moveToPlayerDistance)
     {
-      return;
+      // Attack player every attackRate delta seconds
+      if (timeSinceLastAttack > attackRate)
+      {
+        Attack();
+        timeSinceLastAttack = 0f;
+      }
+      else
+      {
+        timeSinceLastAttack += Time.deltaTime;
+      }
     }
-    MoveEnemy(moveDirection);
+    else
+    {
+      // Stop moving when attacking
+      if (timeSinceLastAttack > attackRate)
+      {
+        MoveEnemy(moveDirection);
+      }
+      else
+      {
+        timeSinceLastAttack += Time.deltaTime;
+      }
+    }
   }
 
   void MoveEnemy(Vector2 direction)
@@ -68,12 +102,41 @@ public class Enemy : MonoBehaviour
     Destroy(gameObject);
   }
 
-  void OnCollisionEnter2D(Collision2D collision)
+  void Attack()
   {
-    Debug.Log("Enemy collided with " + collision.gameObject.tag);
-    if (collision.gameObject.tag == "Player")
-    {
-      collision.gameObject.GetComponent<Player>().TakeDamage(1);
-    }
+
+    //Play an attack animation
+    Debug.Log("Enemy Attacking");
+    animator.SetTrigger("Attack");
+
+    // Start attackswinger, do the attack after attackRate seconds
+    Invoke("RobinAttack", attackRate);
   }
+
+  void RobinAttack()
+  {
+    Debug.Log("RobinAttack");
+
+    Debug.Log("Enemy Attack after x seconds");
+
+    Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayers);
+
+    foreach (Collider2D player in hitPlayers)
+    {
+      Debug.Log("We hit " + player.name);
+      player.GetComponent<Player>().TakeDamage(1);
+    }
+
+  }
+
+  /*
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+      Debug.Log("Enemy collided with " + collision.gameObject.tag);
+      if (collision.gameObject.tag == "Player")
+      {
+        collision.gameObject.GetComponent<Player>().TakeDamage(1);
+      }
+    }
+    */
 }
