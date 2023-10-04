@@ -9,7 +9,7 @@ public class GameLogic : MonoBehaviour
   void Start()
   {
     // Spawn new enemy every 2 seconds
-    InvokeRepeating("SpawnEnemy", 0.0f, 2.0f);
+    InvokeRepeating("SpawnEnemy", 0.0f, 5.0f);
   }
 
   // Update is called once per frame

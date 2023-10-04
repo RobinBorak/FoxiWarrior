@@ -26,7 +26,7 @@ public class PlayerCombat : MonoBehaviour
 
   }
 
-  void Attack()
+  public void Attack()
   {
     //Play an attack animation
     Debug.Log("Attacking");
