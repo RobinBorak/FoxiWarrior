@@ -5,23 +5,29 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
 
+  // Public variables
   public ScoreLogic scoreLogic;
+  public LayerMask playerLayers;
+  public Player player;
+
+  // Enemy attributes
   int health = 3;
   int currentHealth;
-
   float speed = 2.0f;
-  Transform target;
-  Rigidbody2D rb;
-  Vector2 moveDirection;
 
+  // Attack attributes
   Transform attackPoint;
-  public LayerMask playerLayers;
   float attackRate = 1f;
   float timeSinceLastAttack = 100f;
   Animator animator;
-
   float attackRange = 1f;
+
+  // Movement attributes
+  Rigidbody2D rb;
+  Transform target;
+  Vector2 moveDirection;
   float moveToPlayerDistance = 1f;
+
 
 
 
@@ -99,7 +105,8 @@ public class Enemy : MonoBehaviour
 
   void Die()
   {
-    scoreLogic?.AddScore(1);
+    scoreLogic.AddScore(1);
+    player.AddExp(1);
     Destroy(gameObject);
   }
 

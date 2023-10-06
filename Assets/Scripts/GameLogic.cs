@@ -9,7 +9,7 @@ public class GameLogic : MonoBehaviour
   float timeSinceLastEnemySpawned = 7f;
   float timeSinceLastHeartSpawned = 0f;
   int enemiesSpawned = 0;
-  int enemySpawnRate = 10;
+  float enemySpawnRate = 10;
   float nextHeartSpawn = 0f;
   // Start is called before the first frame update
   void Start()
@@ -46,7 +46,22 @@ public class GameLogic : MonoBehaviour
   }
   void IncreaseSpawnRate()
   {
-    enemySpawnRate = this.enemySpawnRate * 9 / 10;
+    if (this.enemySpawnRate > 6f)
+    {
+      enemySpawnRate = this.enemySpawnRate - 1f;
+    }
+    else if (this.enemySpawnRate > 3f)
+    {
+      enemySpawnRate = this.enemySpawnRate - 0.5f;
+    }
+    else if (this.enemySpawnRate > 1f)
+    {
+      enemySpawnRate = this.enemySpawnRate - 0.1f;
+    }
+    else if (this.enemySpawnRate > 0.5f)
+    {
+      enemySpawnRate = this.enemySpawnRate - 0.05f;
+    }
   }
 
   void SpawnEnemy()
@@ -59,6 +74,8 @@ public class GameLogic : MonoBehaviour
     Enemy enemyScript = enemy.GetComponent<Enemy>();
     // Set the score logic from tag "ScoreLogic"
     enemyScript.scoreLogic = GameObject.FindWithTag("ScoreLogic").GetComponent<ScoreLogic>();
+    // Set the player from tag "Player"
+    enemyScript.player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
     // Set the position of the enemy on the edges of the screen
     float x = Random.Range(0, 2) == 0 ? -8f : 8f;

@@ -6,7 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
 
   public JoystickMovement joystickMovement;
-  public float speed;
+  float speed;
+  private Player player;
   private Rigidbody2D rb;
   private Animator animator;
 
@@ -15,13 +16,14 @@ public class PlayerMovement : MonoBehaviour
   {
     rb = GetComponent<Rigidbody2D>();
     animator = GetComponent<Animator>();
+    player = GetComponent<Player>();
   }
 
 
   void FixedUpdate()
   {
     Vector2 direction = joystickMovement.joystickVector;
-    rb.velocity = new Vector2(direction.x * speed, direction.y * speed);
+    rb.velocity = new Vector2(direction.x * player.speed, direction.y * player.speed);
 
     // Rotate the player to face the direction of movement
     if (direction != Vector2.zero)
