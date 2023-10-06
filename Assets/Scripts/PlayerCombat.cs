@@ -29,14 +29,12 @@ public class PlayerCombat : MonoBehaviour
   public void Attack()
   {
     //Play an attack animation
-    Debug.Log("Attacking");
     animator.SetTrigger("Attack");
 
     Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
     foreach (Collider2D enemy in hitEnemies)
     {
-      Debug.Log("We hit " + enemy.name);
       enemy.GetComponent<Enemy>().TakeDamage(1);
     }
 

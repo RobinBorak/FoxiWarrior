@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
   public TextMeshProUGUI healthText;
   int health = 10;
   int currentHealth;
-
+  
   // Start is called before the first frame update
   void Start()
   {
@@ -19,9 +19,7 @@ public class Player : MonoBehaviour
 
   public void TakeDamage(int damage)
   {
-    Debug.Log("Player took damage");
-    currentHealth -= damage;
-    healthText.text = currentHealth.ToString();
+    AddHealth(-1);
     if (currentHealth <= 0)
     {
       Die();
@@ -30,8 +28,12 @@ public class Player : MonoBehaviour
 
   void Die()
   {
-    Debug.Log("Player died");
-    // Load scene 2
     SceneManager.LoadScene(2);
+  }
+
+  public void AddHealth(int healthToAdd)
+  {
+    currentHealth += healthToAdd;
+    healthText.text = currentHealth.ToString();
   }
 }

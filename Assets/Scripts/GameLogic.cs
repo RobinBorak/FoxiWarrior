@@ -5,12 +5,16 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
   public GameObject enemyPrefab;
-  float timeSinceLastSpawned = 7f;
+  public GameObject heartPrefab;
+  float timeSinceLastEnemySpawned = 7f;
+  float timeSinceLastHeartSpawned = 0f;
   int enemiesSpawned = 0;
-  int spawnRate = 10;
+  int enemySpawnRate = 10;
+  float nextHeartSpawn = 0f;
   // Start is called before the first frame update
   void Start()
   {
+    nextHeartSpawn = Random.Range(30f, 80f);
     Physics2D.IgnoreLayerCollision(8, 8);
     Physics2D.IgnoreLayerCollision(7, 8);
   }
@@ -18,10 +22,17 @@ public class GameLogic : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if (timeSinceLastSpawned > spawnRate)
+    InitSpawnEnemy();
+    InitSpawnHeart();
+  }
+
+
+  void InitSpawnEnemy()
+  {
+    if (timeSinceLastEnemySpawned > enemySpawnRate)
     {
       SpawnEnemy();
-      timeSinceLastSpawned = 0f;
+      timeSinceLastEnemySpawned = 0f;
       enemiesSpawned++;
       if (enemiesSpawned % 2 == 0)
       {
@@ -30,13 +41,12 @@ public class GameLogic : MonoBehaviour
     }
     else
     {
-      timeSinceLastSpawned += Time.deltaTime;
+      timeSinceLastEnemySpawned += Time.deltaTime;
     }
   }
-
   void IncreaseSpawnRate()
   {
-    spawnRate = this.spawnRate * 9 / 10;
+    enemySpawnRate = this.enemySpawnRate * 9 / 10;
   }
 
   void SpawnEnemy()
@@ -50,7 +60,36 @@ public class GameLogic : MonoBehaviour
     // Set the score logic from tag "ScoreLogic"
     enemyScript.scoreLogic = GameObject.FindWithTag("ScoreLogic").GetComponent<ScoreLogic>();
 
-    // Set the position of the enemy
-    enemy.transform.position = new Vector3(Random.Range(-8.0f, 8.0f), Random.Range(-5.0f, 5.0f), 0);
+    // Set the position of the enemy on the edges of the screen
+    float x = Random.Range(0, 2) == 0 ? -8f : 8f;
+    float y = Random.Range(-4f, 4f);
+    enemy.transform.position = new Vector3(x, y, 0);
+
+  }
+
+  void InitSpawnHeart()
+  {
+    if (timeSinceLastHeartSpawned > nextHeartSpawn)
+    {
+      SpawnHeart();
+      //Is extra lucky spawn 2 more hearts
+      if (Random.Range(0, 100) > 90)
+      {
+        SpawnHeart();
+        SpawnHeart();
+      }
+      timeSinceLastHeartSpawned = 0f;
+      nextHeartSpawn = Random.Range(10f, 80f);
+    }
+    else
+    {
+      timeSinceLastHeartSpawned += Time.deltaTime;
+    }
+  }
+
+  void SpawnHeart()
+  {
+    GameObject heart = Instantiate(heartPrefab);
+    heart.transform.position = new Vector3(Random.Range(-6.0f, 6.0f), Random.Range(-4.0f, 4.0f), 0);
   }
 }

@@ -107,7 +107,6 @@ public class Enemy : MonoBehaviour
   {
 
     //Play an attack animation
-    Debug.Log("Enemy Attacking");
     animator.SetTrigger("Attack");
 
     // Start attackswinger
@@ -116,13 +115,11 @@ public class Enemy : MonoBehaviour
 
   void Swing()
   {
-    Debug.Log("Enemy Attack after " + attackRate + " seconds");
 
     Collider2D[] hitPlayers = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerLayers);
 
     foreach (Collider2D player in hitPlayers)
     {
-      Debug.Log("Enemy hit");
       player.GetComponent<Player>().TakeDamage(1);
     }
 
