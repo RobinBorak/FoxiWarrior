@@ -23,17 +23,18 @@ public class JoystickMovement : MonoBehaviour
 
   public void PointerDown()
   {
-    Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    mouse.z = 0;
+    Vector2 mouse = Camera.main.ScreenToWorldPoint(getLeftTouchIndex());
     joystickBg.transform.position = mouse;
     joystick.transform.position = mouse;
     joystickTouchPos = mouse;
   }
 
+
+
   public void Drag(BaseEventData baseEventData)
   {
-    PointerEventData pointerEventData = baseEventData as PointerEventData;
-    Vector2 dragPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    Vector2 dragPos = Camera.main.ScreenToWorldPoint(getLeftTouchIndex());
+
     joystickVector = (dragPos - joystickTouchPos).normalized;
 
     float joystickDistance = Vector2.Distance(dragPos, joystickTouchPos);
@@ -47,7 +48,23 @@ public class JoystickMovement : MonoBehaviour
       joystick.transform.position = joystickTouchPos + joystickVector * joystickRadius;
     }
   }
-
+  Vector3 getLeftTouchIndex()
+  {
+    int touchesLength = Input.touches.Length;
+    if(touchesLength < 2){
+      return Input.mousePosition;
+    }
+    int leftTouchIndex = -1;
+    for (int i = 0; i < Input.touches.Length; i++)
+    {
+      if (Input.touches[i].position.x < Screen.width / 2)
+      {
+        leftTouchIndex = i;
+      }
+    }
+    return Input.touches[leftTouchIndex].position;
+  }
+ 
   public void PointerUp()
   {
     joystickVector = Vector2.zero;
