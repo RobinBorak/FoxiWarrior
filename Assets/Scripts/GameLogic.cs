@@ -11,9 +11,8 @@ public class GameLogic : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    // Spawn new enemy every x seconds
-    //InvokeRepeating("SpawnEnemy", 0.0f, 1.0f);
-    //SpawnEnemy();
+    Physics2D.IgnoreLayerCollision(8, 8);
+    Physics2D.IgnoreLayerCollision(7, 8);
   }
 
   // Update is called once per frame

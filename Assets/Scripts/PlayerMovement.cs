@@ -8,11 +8,13 @@ public class PlayerMovement : MonoBehaviour
   public JoystickMovement joystickMovement;
   public float speed;
   private Rigidbody2D rb;
+  private Animator animator;
 
   // Start is called before the first frame update
   void Start()
   {
     rb = GetComponent<Rigidbody2D>();
+    animator = GetComponent<Animator>();
   }
 
 
@@ -20,6 +22,20 @@ public class PlayerMovement : MonoBehaviour
   {
     Vector2 direction = joystickMovement.joystickVector;
     rb.velocity = new Vector2(direction.x * speed, direction.y * speed);
+
+    // Rotate the player to face the direction of movement
+    if (direction != Vector2.zero)
+    {
+      float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+      rb.rotation = angle - 90f;
+
+      // Play the walking animation
+      animator.SetBool("isWalking", true);
+    } else {
+      // Stop the walking animation
+      animator.SetBool("isWalking", false);
+    }
+
   }
 
   /*

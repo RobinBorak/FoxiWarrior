@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -30,5 +31,7 @@ public class Player : MonoBehaviour
   void Die()
   {
     Debug.Log("Player died");
+    // Load scene 2
+    SceneManager.LoadScene(2);
   }
 }

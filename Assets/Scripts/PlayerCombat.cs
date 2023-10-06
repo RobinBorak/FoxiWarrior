@@ -7,7 +7,7 @@ public class PlayerCombat : MonoBehaviour
 
   public Animator animator;
   public Transform attackPoint;
-  public float attackRange = 0.5f;
+  float attackRange = 1f;
   public LayerMask enemyLayers;
 
   // Start is called before the first frame update

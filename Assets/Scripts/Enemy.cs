@@ -20,8 +20,8 @@ public class Enemy : MonoBehaviour
   float timeSinceLastAttack = 100f;
   Animator animator;
 
-  public float attackRange = 0.5f;
-  public float moveToPlayerDistance = 1.7f;
+  float attackRange = 1f;
+  float moveToPlayerDistance = 1f;
 
 
 
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
       Vector2 direction = target.position - transform.position;
 
       float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-      rb.rotation = angle - 180f;
+      rb.rotation = angle - 90f;
       direction.Normalize();
       moveDirection = direction;
     }
