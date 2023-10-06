@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
 {
   public float speed = 2f;
   public TextMeshProUGUI healthText;
+  public delegate void OnLevelUp();
+  public static event OnLevelUp onLevelUp;
+
   int health = 10;
   int currentHealth;
 
@@ -47,6 +50,7 @@ public class Player : MonoBehaviour
     Debug.Log("Level up!");
     level++;
     speed += 0.5f;
+    onLevelUp?.Invoke();
   }
 
   public void AddExp(int expToAdd)
