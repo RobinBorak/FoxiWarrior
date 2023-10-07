@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-  public float speed = 2f;
+  public float speed = 2.5f;
   public TextMeshProUGUI healthText;
   public delegate void OnLevelUp();
   public static event OnLevelUp onLevelUp;
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
   int level = 1;
   int exp = 0;
-  int[] expStages = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90 };
+  int[] expStages = { 0, 5, 10, 15, 20, 30, 40, 50, 60, 70 };
 
   // Start is called before the first frame update
   void Start()
