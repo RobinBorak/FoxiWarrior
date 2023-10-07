@@ -12,9 +12,6 @@ public class Pause : MonoBehaviour
 
   void Start()
   {
-    // What? This is here because SetActive(true) only worked second time when pausing.
-    // This does not actually activate the pause menu but solves the problem.
-    pauseMenuUI.SetActive(true);
   }
 
   public void TogglePause()
