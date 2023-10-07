@@ -6,10 +6,10 @@ public class GameLogic : MonoBehaviour
 {
   public GameObject enemyPrefab;
   public GameObject heartPrefab;
-  float timeSinceLastEnemySpawned = 7f;
+  float timeSinceLastEnemySpawned = 5f;
   float timeSinceLastHeartSpawned = 0f;
   int enemiesSpawned = 0;
-  float enemySpawnRate = 10;
+  float enemySpawnRate = 8f;
   float nextHeartSpawn = 0f;
   // Start is called before the first frame update
   void Start()
